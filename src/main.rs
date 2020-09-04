@@ -1,4 +1,4 @@
-use actix_web::{web, App, HttpServer, get};
+use actix_web::{get, web, App, HttpServer};
 use std::sync::Mutex;
 
 struct AppState {
@@ -19,9 +19,8 @@ async fn main() -> std::io::Result<()> {
     let app_state = web::Data::new(AppState {
         counter: Mutex::new(0),
     });
-    HttpServer::new(move || {
-        App::new()
-        .app_data(app_state.clone())
-        .service(index)
-    }).bind(host)?.run().await
+    HttpServer::new(move || App::new().app_data(app_state.clone()).service(index))
+        .bind(host)?
+        .run()
+        .await
 }
