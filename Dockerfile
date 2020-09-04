@@ -30,8 +30,12 @@ COPY Cargo.lock /project/Cargo.lock
 COPY src/ /project/src
 RUN cargo install --path /project --root /output
 
-FROM mcr.microsoft.com/windows/nanoserver:1903 as base
+#FROM mcr.microsoft.com/windows/nanoserver:1903
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 
-COPY --from=build /output/simple-web-service.exe /
+ADD https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe /vc_redist.x64.exe
+RUN c:\vc_redist.x64.exe /install /quiet /norestart
 
-CMD ["c:\simple-web-service.exe"]
+COPY --from=build c:/output/bin/simple-web-service.exe /
+
+CMD ["/simple-web-service.exe"]
