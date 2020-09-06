@@ -14,7 +14,7 @@ jobs:
         - name: Build and push
           shell: bash
           run: |
-            IMAGE_ID=docker.pkg.github.com/${{ github.repository }}:$GITHUB_SHA
+            IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/web:$GITHUB_SHA
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
             docker build -t $IMAGE_ID .
             docker push $IMAGE_ID
