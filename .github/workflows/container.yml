@@ -1,0 +1,19 @@
+name: Build a Windows container
+
+on:
+    push:
+        branches: [master]
+
+jobs:
+    build:
+        runs-on: windows-latest
+
+        steps:
+        - uses: actions/checkout@v1
+
+        - name: Build and push
+          shell: bash
+          run: |
+            IMAGE_ID=docker.pkg.github.com/${{ github.repository }}:$GITHUB_SHA
+            docker build -t $IMAGE_ID .
+            docker push $IMAGE_ID
