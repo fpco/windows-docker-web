@@ -36,6 +36,6 @@ FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
 ADD https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe /vc_redist.x64.exe
 RUN c:\vc_redist.x64.exe /install /quiet /norestart
 
-COPY --from=build c:/output/bin/simple-web-service.exe /
+COPY --from=build c:/output/bin/windows-docker-web.exe /
 
-CMD ["/simple-web-service.exe"]
+CMD ["/windows-docker-web.exe"]
