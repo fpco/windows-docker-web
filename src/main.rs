@@ -12,7 +12,7 @@ async fn index(data: web::Data<AppState>) -> String {
     format!("Counter is at {}", counter)
 }
 
-#[actix_rt::main]
+#[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let host = "0.0.0.0:8080";
     println!("Trying to listen on {}", host);
