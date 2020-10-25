@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019 as build
+FROM mcr.microsoft.com/windows/servercore:2004 as build
 
 # Restore the default Windows shell for correct batch processing.
 SHELL ["cmd", "/S", "/C"]
@@ -19,19 +19,18 @@ RUN vs_buildtools.exe --quiet --wait --norestart --nocache \
 ENTRYPOINT ["C:\\BuildTools\\Common7\\Tools\\VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
 
 RUN curl -fSLo rustup-init.exe https://win.rustup.rs/x86_64
-RUN start /w rustup-init.exe -y -v --default-toolchain 1.46.0 && echo "Error level is %ERRORLEVEL%"
+RUN start /w rustup-init.exe -y -v && echo "Error level is %ERRORLEVEL%"
 RUN del rustup-init.exe
 
 RUN setx /M PATH "C:\Users\ContainerAdministrator\.cargo\bin;%PATH%"
-RUN rustup install 1.46.0
 
 COPY Cargo.toml /project/Cargo.toml
 COPY Cargo.lock /project/Cargo.lock
+COPY rust-toolchain /project/rust-toolchain
 COPY src/ /project/src
 RUN cargo install --path /project --root /output
 
-#FROM mcr.microsoft.com/windows/nanoserver:1903
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2019
+FROM mcr.microsoft.com/windows/servercore:2004
 
 ADD https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe /vc_redist.x64.exe
 RUN c:\vc_redist.x64.exe /install /quiet /norestart
