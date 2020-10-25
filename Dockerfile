@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:2004 as build
+FROM mcr.microsoft.com/windows/servercore:1809 as build
 
 # Restore the default Windows shell for correct batch processing.
 SHELL ["cmd", "/S", "/C"]
@@ -30,7 +30,7 @@ COPY rust-toolchain /project/rust-toolchain
 COPY src/ /project/src
 RUN cargo install --path /project --root /output
 
-FROM mcr.microsoft.com/windows/servercore:2004
+FROM mcr.microsoft.com/windows/servercore:1809
 
 ADD https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe /vc_redist.x64.exe
 RUN c:\vc_redist.x64.exe /install /quiet /norestart
