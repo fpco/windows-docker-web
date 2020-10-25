@@ -15,6 +15,6 @@ jobs:
           shell: bash
           run: |
             echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username fpcojenkins --password-stdin
-            IMAGE_ID=fpco/windows-docker-web
+            IMAGE_ID=fpco/windows-docker-web:$GITHUB_SHA
             docker build -t $IMAGE_ID .
             docker push $IMAGE_ID
